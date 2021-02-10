@@ -1,10 +1,11 @@
-const express = require('express')
-const app = express()
+import './database.js'
+import setRoutes from './routes.js'
+import express from 'express'
+
+const server = express()
 const port = 3000
 
-app.get('/', function(req, res) {
-  console.log("entrou no bla")
-  res.json({ message: 'Hello hello!' })
-})
+setRoutes(server)
+server.listen(port, () => console.log("Server started..."))
 
-app.listen(port, () => console.log("Started!")) 
+export default server
