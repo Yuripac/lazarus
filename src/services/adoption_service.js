@@ -1,3 +1,4 @@
+import AdoptionModel from '../models/adoption_model.js'
 import Service from './service.js'
 
 class AdoptionService extends Service {
@@ -6,4 +7,6 @@ class AdoptionService extends Service {
   }
 }
 
-export default AdoptionService
+export default new AdoptionService(
+  new AdoptionModel().getInstance()
+)

@@ -1,4 +1,8 @@
-// import allControllers
+import adoptionController from './src/controllers/adoption_controller.js'
+
 export default (server) => {
-  server.get('/api/hello_world', (req, res) => res.json({ message: 'HELLO WORLD!' }))
+  // Index
+  server.get('/api/adoptions', adoptionController.getAll)
+  // Insert
+  server.post('/api/adoptions', adoptionController.insert)
 }

@@ -5,7 +5,6 @@ class Connection {
     const url = 'mongodb://127.0.0.1:27017'
     console.log("Establish new connection with url", url);
 
-    // mongoose.Promise = global.Promise
     mongoose.set("useNewUrlParser", true)
     mongoose.set("useFindAndModify", false)
     mongoose.set("useCreateIndex", true)

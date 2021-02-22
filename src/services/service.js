@@ -14,6 +14,14 @@ class Service {
     delete query.skip
     delete query.limit
 
+    if (query._id) {
+      try {
+        query._id = new mongoose.mongo.ObjectId(query._id)
+      } catch (err) {
+        console.log('not able to generate mongoose id with content', query._id)
+      }
+    }
+
     try {
       let items = await this.model
         .find(query)
@@ -30,7 +38,7 @@ class Service {
     } catch (errors) {
       return {
         error: true,
-        status: 500,
+        statusCode: 500,
         errors
       }
     }
@@ -42,6 +50,7 @@ class Service {
       if (item) {
         return {
           error: false,
+          statusCode: 201,
           item
         }
       }
@@ -50,12 +59,12 @@ class Service {
       return {
         error: true,
         statusCode: 500,
-        message: error.errmsg || 'Not able to create item',
+        message: err.errmsg || 'Not able to create item',
         errors: err.errors
       }
     }
   }
-
+  
   async update(id, data) {
     try {
       let item = await this.model.findByIdAndUpdate(id, data, { new: true })
@@ -67,7 +76,7 @@ class Service {
     } catch(errors) {
       return {
         error: true,
-        status: 500,
+        statusCode: 500,
         errors
       }
     }
