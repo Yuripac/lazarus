@@ -35,12 +35,8 @@ class Service {
         data: items,
         total
       }
-    } catch (errors) {
-      return {
-        error: true,
-        statusCode: 500,
-        errors
-      }
+    } catch (err) {
+      return this.internalError(err)
     }
   }
 
@@ -55,12 +51,7 @@ class Service {
         }
       }
     } catch (err) {
-      return {
-        error: true,
-        statusCode: 500,
-        message: err.errmsg || 'Not able to create item',
-        errors: err.errors
-      }
+      return this.internalError(err.errors)
     }
   }
   
