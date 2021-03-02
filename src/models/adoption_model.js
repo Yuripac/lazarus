@@ -18,7 +18,7 @@ class AdoptionModel {
     schema.plugin(uniqueValidator)
     mongoose.model('adoptions', schema)
   }
-
+    
   getInstance() {
     this.initSchema()
     return mongoose.model('adoptions')

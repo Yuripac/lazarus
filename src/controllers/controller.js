@@ -3,6 +3,8 @@ class Controller {
     this.service = service
     this.getAll = this.getAll.bind(this)
     this.insert = this.insert.bind(this)
+    this.update = this.update.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   async getAll(req, res) {
@@ -22,7 +24,7 @@ class Controller {
     return res.status(serviceRes.statusCode).send(serviceRes)
   }
 
-  async destroy(req, res) {
+  async delete(req, res) {
     const { id } = req.params
     let serviceRes = await this.service.delete(id)
 

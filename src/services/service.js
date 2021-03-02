@@ -55,7 +55,6 @@ class Service {
         }
       }
     } catch (err) {
-      console.log('error', err)
       return {
         error: true,
         statusCode: 500,
@@ -73,11 +72,19 @@ class Service {
         statusCode: 202,
         item
       }
-    } catch(errors) {
-      return {
-        error: true,
-        statusCode: 500,
-        errors
+    } catch(err) {
+      if (err instanceof mongoose.CastError) {
+        return {
+          error: true,
+          statusCode: 404,
+          message: 'Item not found'
+        }
+      } else {
+        return {
+          error: true,
+          statusCode: 500,
+          errors: err
+        }
       }
     }
   }
@@ -98,11 +105,19 @@ class Service {
         statusCode: 302,
         item
       }
-    } catch(error) {
-      return {
-        error: true,
-        statusCode: 500,
-        error,
+    } catch(err) {
+      if (err instanceof mongoose.CastError) {
+        return {
+          error: true,
+          statusCode: 404,
+          message: "Item not found"
+        }
+      } else {
+        return {
+          error: true,
+          statusCode: 500,
+          errors: err,
+        }
       }
     }
   }
