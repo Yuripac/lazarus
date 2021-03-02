@@ -67,58 +67,48 @@ class Service {
   async update(id, data) {
     try {
       let item = await this.model.findByIdAndUpdate(id, data, { new: true })
-      return {
-        error: false,
-        statusCode: 202,
-        item
-      }
+      return item ?
+        {
+          error: false,
+          statusCode: 202,
+          item
+        } : 
+        this.notFound()
     } catch(err) {
-      if (err instanceof mongoose.CastError) {
-        return {
-          error: true,
-          statusCode: 404,
-          message: 'Item not found'
-        }
-      } else {
-        return {
-          error: true,
-          statusCode: 500,
-          errors: err
-        }
-      }
+      return this.internalError(err)
     }
   }
 
   async delete(id) {
     try {
       let item = await this.model.findByIdAndDelete(id)
-      if (!item) {
-        return {
-          error: true,
-          statusCode: 404,
-          message: 'Item not found'
-        }
-      }
-      return {
-        error: false,
-        deleted: true,
-        statusCode: 302,
-        item
-      }
+      return item ? 
+        {
+          error: false,
+          deleted: true,
+          statusCode: 302,
+          item
+        } : 
+        this.notFound()
+
     } catch(err) {
-      if (err instanceof mongoose.CastError) {
-        return {
-          error: true,
-          statusCode: 404,
-          message: "Item not found"
-        }
-      } else {
-        return {
-          error: true,
-          statusCode: 500,
-          errors: err,
-        }
-      }
+      return this.internalError(err)
+    }
+  }
+
+  notFound() {
+    return {
+      error: true,
+      statusCode: 404,
+      message: 'Item not found'
+    }
+  }
+
+  internalError(errors) {
+    return {
+      error: true,
+      statusCode: 500,
+      errors
     }
   }
 }
