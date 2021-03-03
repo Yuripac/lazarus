@@ -23,17 +23,14 @@ class Service {
     }
 
     try {
-      let items = await this.model
-        .find(query)
-        .skip(skip)
-        .limit(limit)
+      let items = await this.model.find(query).skip(skip).limit(limit)
       let total = await this.model.count()
 
       return {
         error: false,
         statusCode: 200,
         data: items,
-        total
+        total,
       }
     } catch (err) {
       return this.internalError(err)
@@ -47,25 +44,25 @@ class Service {
         return {
           error: false,
           statusCode: 201,
-          item
+          item,
         }
       }
     } catch (err) {
       return this.internalError(err.errors)
     }
   }
-  
+
   async update(id, data) {
     try {
       let item = await this.model.findByIdAndUpdate(id, data, { new: true })
-      return item ?
-        {
-          error: false,
-          statusCode: 202,
-          item
-        } : 
-        this.notFound()
-    } catch(err) {
+      return item
+        ? {
+            error: false,
+            statusCode: 202,
+            item,
+          }
+        : this.notFound()
+    } catch (err) {
       return this.internalError(err)
     }
   }
@@ -73,16 +70,15 @@ class Service {
   async delete(id) {
     try {
       let item = await this.model.findByIdAndDelete(id)
-      return item ? 
-        {
-          error: false,
-          deleted: true,
-          statusCode: 302,
-          item
-        } : 
-        this.notFound()
-
-    } catch(err) {
+      return item
+        ? {
+            error: false,
+            deleted: true,
+            statusCode: 302,
+            item,
+          }
+        : this.notFound()
+    } catch (err) {
       return this.internalError(err)
     }
   }
@@ -91,7 +87,7 @@ class Service {
     return {
       error: true,
       statusCode: 404,
-      message: 'Item not found'
+      message: 'Item not found',
     }
   }
 
@@ -99,7 +95,7 @@ class Service {
     return {
       error: true,
       statusCode: 500,
-      errors
+      errors,
     }
   }
 }

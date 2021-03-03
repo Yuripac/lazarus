@@ -7,6 +7,4 @@ class AdoptionService extends Service {
   }
 }
 
-export default new AdoptionService(
-  new AdoptionModel().getInstance()
-)
+export default new AdoptionService(new AdoptionModel().getInstance())

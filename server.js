@@ -9,6 +9,6 @@ const port = 3000
 server.use(bodyParser.json())
 setRoutes(server)
 
-server.listen(port, () => console.log("Server started..."))
+server.listen(port, () => console.log('Server started...'))
 
 export default server
