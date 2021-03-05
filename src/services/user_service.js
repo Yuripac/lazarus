@@ -16,6 +16,7 @@ class UserService extends Service {
     const permittedParams = ['name']
     let filteredData = {}
     permittedParams.forEach((elem) => (filteredData[elem] = data[elem]))
+
     return filteredData
   }
 }
