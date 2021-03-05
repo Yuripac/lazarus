@@ -5,6 +5,10 @@ class UserController extends Controller {
   constructor(service) {
     super(service)
   }
+
+  login(req, res) {
+    return res.status(200).send({ user: req.user.toAuthJSON() })
+  }
 }
 
 export default new UserController(userService)

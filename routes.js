@@ -1,5 +1,6 @@
 import adoptionController from './src/controllers/adoption_controller.js'
 import userController from './src/controllers/user_controller.js'
+import Auth from './src/authentication.js'
 
 export default (server) => {
   // Adoptions1
@@ -19,4 +20,7 @@ export default (server) => {
   server.post('/api/users', userController.insert)
   // Update
   server.put('/api/users/:id', userController.update)
+
+  // login test
+  server.post('/api/login', new Auth().authenticate(), userController.login)
 }
