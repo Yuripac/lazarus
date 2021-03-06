@@ -6,7 +6,7 @@ class UserController extends Controller {
     super(service)
   }
 
-  login(req, res) {
+  async login(req, res) {
     return res.status(200).send({ user: req.user.toAuthJSON() })
   }
 }
