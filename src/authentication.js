@@ -42,4 +42,4 @@ class Authentication {
   }
 }
 
-export default Authentication
+export default new Authentication()
