@@ -31,7 +31,7 @@ function userController() {
     return res.status(serviceRes.statusCode).send(serviceRes)
   })
 
-  router.post('/login', async (req, res) => {
+  router.post('/login', auth.authenticate(), async (req, res) => {
     return res.status(200).send({ user: req.user.toAuthJSON() })
   })
 

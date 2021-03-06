@@ -20,7 +20,7 @@ class Authentication {
     return jwt(
       Object.assign(
         {
-          secret: 'secret',
+          secret: process.env.JWT_SECRET,
           userProperty: 'payload',
           algorithms: ['HS256'],
           getToken: this.getTokenFromHeader,
