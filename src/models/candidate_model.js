@@ -29,6 +29,7 @@ class CandidateModel {
       },
       { timestamps: true }
     )
+    schema.index({ email: 1, adoption: 1 }, { unique: true })
 
     schema.plugin(uniqueValidator)
     mongoose.model('candidates', schema)
