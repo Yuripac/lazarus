@@ -15,6 +15,7 @@ class UserModel {
         email: {
           type: 'String',
           required: true,
+          match: /\S+@\S+\.\S+/,
         },
         salt: {
           type: 'String',
