@@ -14,6 +14,27 @@ class AdoptionModel {
           type: 'String',
           required: true,
         },
+        male: {
+          type: 'Boolean',
+          required: true,
+        },
+        age: {
+          type: 'Number',
+        },
+        vaccinations: {
+          rabies: {
+            type: 'Boolean',
+            required: true,
+          },
+        },
+        images: [
+          {
+            url: {
+              type: 'String',
+              required: true,
+            },
+          },
+        ],
       },
       { timestamps: true }
     )
