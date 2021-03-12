@@ -1,10 +1,15 @@
+import Model from './model.js'
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 const { ObjectId } = Schema
 import uniqueValidator from 'mongoose-unique-validator'
 
-class CandidateModel {
-  initSchema() {
+class CandidateModel extends Model {
+  constructor() {
+    super('candidates')
+  }
+
+  buildSchema() {
     const schema = new Schema(
       {
         name: {
@@ -33,11 +38,6 @@ class CandidateModel {
 
     schema.plugin(uniqueValidator)
     mongoose.model('candidates', schema)
-  }
-
-  getInstance() {
-    this.initSchema()
-    return mongoose.model('candidates')
   }
 }
 

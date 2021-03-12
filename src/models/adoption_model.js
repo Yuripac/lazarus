@@ -1,9 +1,14 @@
+import Model from './model.js'
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 import uniqueValidator from 'mongoose-unique-validator'
 
-class AdoptionModel {
-  initSchema() {
+class AdoptionModel extends Model {
+  constructor() {
+    super('adoptions')
+  }
+
+  buildSchema() {
     const schema = new Schema(
       {
         animalName: {
@@ -40,12 +45,7 @@ class AdoptionModel {
     )
 
     schema.plugin(uniqueValidator)
-    mongoose.model('adoptions', schema)
-  }
-
-  getInstance() {
-    this.initSchema()
-    return mongoose.model('adoptions')
+    return schema
   }
 }
 

@@ -1,11 +1,16 @@
+import Model from './model.js'
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 import uniqueValidator from 'mongoose-unique-validator'
 import PasswordEncryptor from '../user/password_encryptor.js'
 import jwt from 'jsonwebtoken'
 
-class UserModel {
-  initSchema() {
+class UserModel extends Model {
+  constructor() {
+    super('users')
+  }
+
+  buildSchema() {
     const schema = new Schema(
       {
         name: {
@@ -24,6 +29,10 @@ class UserModel {
         password: {
           type: 'String',
           required: true,
+        },
+        admin: {
+          type: 'Boolean',
+          default: false,
         },
       },
       { timestamp: true }
@@ -44,14 +53,7 @@ class UserModel {
     // Prevent model overwriting
     try {
       mongoose.model('users', schema)
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
-
-  getInstance() {
-    this.initSchema()
-    return mongoose.model('users')
+    } catch (err) {}
   }
 
   generateJWT() {
