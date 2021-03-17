@@ -1,6 +1,7 @@
 import Model from './model.js'
 import mongoose from 'mongoose'
 const { Schema } = mongoose
+
 import uniqueValidator from 'mongoose-unique-validator'
 
 class AdoptionModel extends Model {

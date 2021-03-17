@@ -12,7 +12,7 @@ describe('AdoptionModel', () => {
   })
 
   describe('#create', () => {
-    it('should create a adoption when all data are valid', () => {
+    it('should create when all the attributes are valid', () => {
       const data = {
         animalName: 'some name here',
         description: 'some description here',
@@ -28,7 +28,7 @@ describe('AdoptionModel', () => {
       })
     })
 
-    it("shouldn't create a adoption when the attributes are invalid", () => {
+    it("shouldn't create when the required attributes are missing", () => {
       const data = {
         animalName: '',
         vaccinations: {

@@ -1,11 +1,21 @@
 import mongoose from 'mongoose'
+import { MongoMemoryServer } from 'mongodb-memory-server'
+const mongoServer = new MongoMemoryServer()
 
 export default (() => {
   before((done) => {
-    mongoose.set('useNewUrlParser', true)
-    mongoose.set('useFindAndModify', false)
-    mongoose.set('useCreateIndex', true)
-    mongoose.set('useUnifiedTopology', true)
-    mongoose.connect('mongodb://localhost/test', done)
+    mongoServer.getUri().then((uri) => {
+      const opts = {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+      }
+      mongoose.connect(uri, opts, done)
+    })
+  })
+
+  afterEach((done) => {
+    mongoose.connection.db.dropDatabase(done)
   })
 })()

@@ -1,6 +1,7 @@
 import Model from './model.js'
 import mongoose from 'mongoose'
 const { Schema } = mongoose
+
 import uniqueValidator from 'mongoose-unique-validator'
 import PasswordEncryptor from '../user/password_encryptor.js'
 import jwt from 'jsonwebtoken'
@@ -46,7 +47,9 @@ class UserModel extends Model {
 
     // Encrypt and set password on user creation
     schema.pre('validate', function () {
-      if (this.isNew) this.setPassword(this.password)
+      if (this.isNew && this.password) {
+        this.setPassword(this.password)
+      }
     })
 
     schema.plugin(uniqueValidator)

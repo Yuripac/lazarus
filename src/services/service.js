@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-
 class Service {
   constructor(model) {
     this.model = model
@@ -9,7 +8,7 @@ class Service {
     let { skip, limit } = query
 
     skip = skip ? Number(skip) : 0
-    limit = limit ? Number(skip) : 10
+    limit = limit ? Number(limit) : 10
 
     delete query.skip
     delete query.limit
@@ -48,13 +47,16 @@ class Service {
         }
       }
     } catch (err) {
-      return this.internalError(err.errors)
+      return this.badRequest(err.errors)
     }
   }
 
   async update(id, data) {
     try {
-      let item = await this.model.findByIdAndUpdate(id, data, { new: true })
+      let item = await this.model.findByIdAndUpdate(id, data, {
+        runValidators: true,
+        new: true,
+      })
       return item
         ? {
             error: false,
@@ -63,7 +65,8 @@ class Service {
           }
         : this.notFound()
     } catch (err) {
-      return this.internalError(err)
+      const error = err.errors || err
+      return this.badRequest(error)
     }
   }
 
@@ -73,7 +76,6 @@ class Service {
       return item
         ? {
             error: false,
-            deleted: true,
             statusCode: 302,
             item,
           }
@@ -92,9 +94,17 @@ class Service {
   }
 
   internalError(errors) {
+    return this.errorResult(500, errors)
+  }
+
+  badRequest(errors) {
+    return this.errorResult(400, errors)
+  }
+
+  errorResult(code, errors) {
     return {
       error: true,
-      statusCode: 500,
+      statusCode: code,
       errors,
     }
   }
