@@ -6,7 +6,7 @@ class UserService extends Service {
     super(model)
   }
 
-  // Update only permitted attrubytes (not password or email)
+  // Update only permitted attributes (not password or email)
   async update(id, data) {
     return await super.update(id, this.permittedUpdateParams(data))
   }
