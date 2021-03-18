@@ -1,19 +1,22 @@
 import '../test_helper.js'
-import service from '../../src/services/user_service.js'
 import serviceSharedTests from './shared.js'
+import service from '../../src/services/candidate_service.js'
 import mongoose from 'mongoose'
 import { expect } from 'chai'
 
-describe('UserService', () => {
+describe('CandidateService', () => {
   serviceSharedTests(service)
 
   describe('#insert', () => {
-    it('should insert a new document and return a success response', async () => {
-      const expectedName = 'random name'
+    it('should insert a new candidate and return a success response', async () => {
+      const expectedName = 'somename'
       const data = {
         name: expectedName,
-        email: 'random@gmail.com',
-        password: 'randompassword',
+        email: 'bla@gmail.com',
+        phone: '999999999',
+        adoption: {
+          _id: mongoose.Types.ObjectId(),
+        },
       }
 
       const expectedTotal = (await service.model.count({})) + 1
@@ -25,9 +28,9 @@ describe('UserService', () => {
       expect(item.name).to.equal(expectedName)
     })
 
-    it('should not insert a new document and return a failed response when required attributes missing', async () => {
+    it('should not insert a new candidate and return a failed response when required attributes missing', async () => {
       const data = {
-        name: 'invalid user',
+        name: 'invalid candidate',
       }
 
       const expectedTotal = await service.model.count({})
@@ -42,33 +45,27 @@ describe('UserService', () => {
   })
 
   describe('#update', () => {
-    it('should not update the email or password', async () => {
-      const initData = {
-        name: 'random name',
-        email: 'random@gmail.com',
-        password: 'randompassword',
-      }
-      // Create a new user first
-      const user = (await service.insert(initData)).item
-      const expectedName = 'another name'
-
-      const { error, statusCode, item } = await service.update(user._id, {
+    it('should update the candidate when attributes are valid', async () => {
+      const candidate = await service.model.findOne()
+      const expectedName = 'new candidate name'
+      const data = {
         name: expectedName,
-        email: 'anotheremail@gmail.com',
-        password: 'anotherpassword',
-      })
+      }
+
+      const { error, statusCode, item } = await service.update(
+        candidate._id,
+        data
+      )
 
       expect(error).to.be.false
       expect(statusCode).to.equal(202)
       expect(item.name).to.equal(expectedName)
-      expect(item.email).to.equal(initData.email)
-      expect(item.password).to.equal(user.password)
     })
 
     it('should return a missing code response when the id does not exists', async () => {
       const notFoundId = mongoose.Types.ObjectId()
       const data = {
-        name: 'new name',
+        name: 'new candidate name',
       }
       const { error, statusCode, message } = await service.update(
         notFoundId,
@@ -81,12 +78,15 @@ describe('UserService', () => {
     })
 
     it('should not update and return a failed response when a the attributes are not valid', async () => {
-      let user = await service.model.findOne()
+      let candidate = await service.model.findOne()
       const data = {
         name: '',
       }
 
-      const { error, statusCode, errors } = await service.update(user._id, data)
+      const { error, statusCode, errors } = await service.update(
+        candidate._id,
+        data
+      )
 
       expect(error).to.be.true
       expect(statusCode).to.equal(400)

@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 class Service {
   constructor(model) {
     this.model = model
+    this.updatableAttributes
   }
 
   async getAll(query) {
@@ -52,8 +53,10 @@ class Service {
   }
 
   async update(id, data) {
+    // Get only the attributes permitted to update
+    const updatableData = this.filterUpdatableAttrs(data)
     try {
-      let item = await this.model.findByIdAndUpdate(id, data, {
+      let item = await this.model.findByIdAndUpdate(id, updatableData, {
         runValidators: true,
         new: true,
       })
@@ -68,6 +71,17 @@ class Service {
       const error = err.errors || err
       return this.badRequest(error)
     }
+  }
+
+  // filters the data using the attribute updatableAttributes
+  filterUpdatableAttrs(data) {
+    if (!this.updatableAttributes) return data
+
+    let filteredData = {}
+    this.updatableAttributes.forEach((elem) => {
+      filteredData[elem] = data[elem]
+    })
+    return filteredData
   }
 
   async delete(id) {
